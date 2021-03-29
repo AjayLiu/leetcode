@@ -10,19 +10,16 @@ from typing import List
 class Solution:
 
     def twoSum(self, nums: List[int], target: int) -> List[int]:
-        seen = []
-        for i in range(len(nums)-1):
+        complement_dict = {}
+        for i in range(len(nums)):
             num = nums[i]
-            if(not num in seen):
-                seen.append(num)
-                complement = target - num
-                try:
-                    complement_index = nums.index(complement, i+1)
-                except:
-                    complement_index = -1
+            complement = target - num
+            
+            if complement in complement_dict:
+                return [complement_dict.get(complement), i]
+            complement_dict[num] = i
 
-                if(complement_index != -1):
-                    return [i, complement_index]
+            
+    # print(twoSum([], [1,2,2,3,4,1,4,2], 5))
     
-    # twoSum([], [1,2,2,3,4,1,4,2], 5)
 # @lc code=end
