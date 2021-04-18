@@ -1,2 +1,1 @@
-obj.pop()
-print(obj.getMin())
+[5,4,-1,7,8]
