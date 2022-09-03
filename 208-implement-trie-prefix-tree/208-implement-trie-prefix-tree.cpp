@@ -1,7 +1,7 @@
 class TrieNode {
 public:
     char c;    
-    std::vector<TrieNode*> children;
+    std::vector<std::shared_ptr<TrieNode>> children;
     bool isEnd;
     
     TrieNode() : c(' '), isEnd(false){
@@ -14,29 +14,27 @@ public:
 
 class Trie {
 private:
-    TrieNode* root = new TrieNode();
+    std::shared_ptr<TrieNode> root = std::make_shared<TrieNode>();
     
 public:
     Trie(){
     }
     
     void insert(string word) {
-        TrieNode* ptr = root;
-        char currentChar;
+        TrieNode* ptr = root.get();
         for(char c : word){
             bool found = false;
-            currentChar = c;
-            for(TrieNode* node : ptr->children){
-                if(node->c == c){
-                    ptr = node;
+            for(std::shared_ptr<TrieNode> node : ptr->children){
+                if(node.get()->c == c){
+                    ptr = node.get();
                     found = true;
                     break;
                 }
             }
             if(!found){
-                TrieNode* newNode = new TrieNode(currentChar, false);
+                std::shared_ptr<TrieNode> newNode = std::make_shared<TrieNode>(c, false);
                 ptr->children.push_back(newNode);
-                ptr = newNode;
+                ptr = newNode.get();
             } 
         }
         
@@ -45,13 +43,13 @@ public:
     }
     
     bool search(string word) {
-        TrieNode* ptr = root;
+        TrieNode* ptr = root.get();
         for(char c : word){
             // look in children for c
             bool found = false;
-            for(TrieNode* node : ptr->children){
-                if(node->c == c){
-                    ptr = node;
+            for(std::shared_ptr<TrieNode> node : ptr->children){
+                if(node.get()->c == c){
+                    ptr = node.get();
                     found = true;
                     break;
                 }
@@ -63,13 +61,13 @@ public:
     }
     
     bool startsWith(string prefix) {
-        TrieNode* ptr = root;
+        TrieNode* ptr = root.get();
         for(char c : prefix){
             // look in children for c
             bool found = false;
-            for(TrieNode* node : ptr->children){
-                if(node->c == c){
-                    ptr = node;
+            for(std::shared_ptr<TrieNode> node : ptr->children){
+                if(node.get()->c == c){
+                    ptr = node.get();
                     found = true;
                     break;
                 }
